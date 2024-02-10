@@ -1,0 +1,13 @@
+:root {
+    --height-interaction-components: 50px
+}
+
+.app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    
+    height: 100vh;
+    background-color: #d2d1d1;
+}

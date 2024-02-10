@@ -1,0 +1,40 @@
+.overflow-container {
+    position: relative; 
+    margin-top: 130px;
+
+}
+
+.content {
+    width: 550px;
+    height: 500px;
+
+    background-color: #FFF;
+    border-radius: 10px;
+}
+
+
+.form-group {
+    margin-top: 150px;
+}
+
+.form {
+    width: 100%;
+}
+
+input, select, button {
+    height: var(--height-interaction-components);
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;  /* Remove os botões no Chrome/Safari */
+    margin: 0;  /* Remove a margem padrão */
+}
+
+input[type=number] {
+    -moz-appearance: textfield;  /* Mostra o input como um campo de texto no Firefox */
+}
+
+  
+  
+
