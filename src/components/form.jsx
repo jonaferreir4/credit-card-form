@@ -12,15 +12,20 @@ import discoverImg from '../assets/imgs/discover.png';
             cardType: '',
             cardNumber: '**** **** **** ****',
             cardHolder: 'Jona F Sousa',
-            expires: 'MM/YY'
+            expires: 'MM/YY',
+            cvv: ''
+           
+
         },
         list: [],
-        cardFlipped: false
+        cardFlipped: false,
+        month: '', 
+        year: ''
     }
 
     export default class Form extends Component {
             state = { ...initialState }
-
+            
 
         optionsCardTypes(number) {
             const visa = 4, mastercard1 = 5, mastercard2 = 2,
@@ -96,68 +101,75 @@ import discoverImg from '../assets/imgs/discover.png';
         }
 
         handleCardCVCChange(event) {
-            const date = event.target.value;
-            let formattedDate;
-            if (date.length >= 2) {
-                formattedDate = `${date.slice(0, 2)}/${date.slice(2)}`;
-            } else {
-                formattedDate = date;
-            }
-            console.log(formattedDate);
-            const card = { ...this.state.card };
+            const cvv = event.target.value;
+            const card = { ...this.state.card }
             this.setState({
                 card: {
                     ...card,
-                    expires: formattedDate
+                    cvv: cvv
+
                 }
-            });
+            })
         }
 
         calendarYears() {
             const currentYear = new Date().getFullYear();
-            const yearsArray = Array.from({ length: 100 }, (_, i) => currentYear - i);
+            const yearsArray = Array.from({ length: 30 }, (_, i) => currentYear + i);
         
             const options = yearsArray.map(year => (
                 <option key={year} value={year}>{year}</option>
-            ));
-        
+                ));
+                
             return options;
         }
-
+        
         calendarMonth() {
             const today = new Date();
             const month = today.getMonth() + 1;
             const daysInMonth = new Date(today.getFullYear(), month, 0).getDate();
             
             const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-        
+            
             const options = daysArray.map(day => (
                 <option key={day} value={day}>{day}</option>
-            ));
-        
-            return options;
+                ));
+                return options;
         
         }
 
-        handleFocusOnCVV() {
-            this.setState({ cardFlipped: true });
-        }
+        expiresChange(){
+            let expires = ''
+            const month = this.state.month
+            const year = this.state.year
+            const card = { ...initialState.card }
+            
+            if (month.length >= 2){
+                expires = `${month.slice(0, 2)}/${year.slice(2)}`
+            } else {
+                expires = month
+            }
+
+            this.setState({
+                card: {
+                    ...card,
+                    expires: expires
+                }
+            });
     
-        handleFocusOutCVV() {
-            this.setState({ cardFlipped: false });
         }
 
-
-
-        
+        rotatecard(val){
+            this.setState({ cardFlipped: val })
+        }
 
         renderForm() {
             const { cardFlipped } = this.state;
+            
 
             return (
                 <div className= 'overflow-container' >
                     <div className='content container-fluid'>
-                        <Card {...this.state.card}  cardType={this.state.card.cardType} flipped={cardFlipped} />
+                        <Card {...this.state.card}  cardType={this.state.card.cardType}  flipped={cardFlipped} />
                         <div className="form">
                             <div className="row">
                                 <div className="col-12">
@@ -176,6 +188,7 @@ import discoverImg from '../assets/imgs/discover.png';
                                     <div className="form-group mt-2 px-2">
                                         <label>Nome no cartão </label>
                                         <input type="text" className='form-control'
+                                            maxLength={16}
                                             onChange={e => this.handleCardHolderChange(e)} />
                                     </div>
                                 </div>
@@ -191,19 +204,21 @@ import discoverImg from '../assets/imgs/discover.png';
                                         <div className="row mb-2">
                                             <div className="d-flex">
         
-                                                    <select className='form-control mr-1'>
-                                                        <option>Month</option>
+                                                    <select className='form-control mr-1' 
+                                                        onChange={e => this.setState({ month: e.target.value }, this.expiresChange)}>                                                        <option>Month</option>
                                                         {this.calendarMonth()}
                                                     </select>
         
-                                                    <select className='form-control mx-1'>
+                                                    <select className='form-control mx-1' 
+                                                    onChange={e => this.setState({ year: e.target.value }, this.expiresChange)}>
                                                         <option>Years</option>
                                                        {this.calendarYears()}
                                                     </select>
         
                                                 <input type="text" className='form-control' 
-                                                    onFocus={() => this.handleFocusOnCVV()}
-                                                    onBlur={() => this.handleFocusOutCVV()}
+                                                    onFocus={() => this.rotatecard(true)}
+                                                    onBlur={() => this.rotatecard(false)}
+                                                    onChange={e =>  this.handleCardCVCChange(e)}
                                                     maxLength={3}
                                                 />
         

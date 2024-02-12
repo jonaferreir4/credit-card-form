@@ -3,13 +3,15 @@ import React from 'react'
 import chip from '../assets/imgs/chip.png'
 
 export default props => {
-    const cardClasses = props.flipped ? "card container-fluid flipped" : "card container-fluid";
-    const backCardClasses = props.flipped ? "card card-back container-fluid" : "card card-back container-fluid d-none";
+    console.log(props)
+    const rotate = props.flipped ? 'd-none' : ''
+    const backRotate = props.flipped ? 'd-block' : ''
+    
 
     return (
 
         <>
-        <div className={cardClasses}>
+        <div className={`card container-fluid ${rotate}`}>
             <div className="row">
                 <div className="col-12 d-flex justify-content-between">
                     <div className="chip m-4">
@@ -47,18 +49,20 @@ export default props => {
 
         </div>
 
-        <div className={backCardClasses}>
+        <div className={`card-back container-fluid ${backRotate}`}>
 
             <div className="row">
                 <div className=" black col-12 mt-4"></div>
             </div>
             <div className="row d-flex justify-content-center">
                 <label className='d-flex justify-content-end mx-1 mt-4' >CVV</label>
-                <div className="white col-12 mt-2"></div>
+                <div className="white col-12 mt-2 d-flex justify-content-end">
+                    {props.cvv}
+                </div>
             </div>
 
             <div className="row d-flex justify-content-end">
-            <div className="cardType m-2  ">
+            <div className="cardType m-2">
                     <img src={props.cardType} alt="" />
                 </div>,
             </div>
