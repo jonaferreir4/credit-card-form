@@ -139,11 +139,12 @@ import discoverImg from '../assets/imgs/discover.png';
 
         expiresChange(){
             let expires = ''
-            const month = this.state.month
-            const year = this.state.year
-            const card = { ...initialState.card }
-            
-            if (month.length >= 2){
+            let month = this.state.month === 'Month' ? initialState.card.expires.slice(0, 2) : this.state.month
+            let year = this.state.year === 'Year' ? initialState.card.expires.slice(1) : this.state.year
+
+            const card = { ...this.state.card }
+             
+            if (month.length >= 1){
                 expires = `${month.slice(0, 2)}/${year.slice(2)}`
             } else {
                 expires = month
@@ -211,7 +212,7 @@ import discoverImg from '../assets/imgs/discover.png';
         
                                                     <select className='form-control mx-1' 
                                                     onChange={e => this.setState({ year: e.target.value }, this.expiresChange)}>
-                                                        <option>Years</option>
+                                                        <option>Year</option>
                                                        {this.calendarYears()}
                                                     </select>
         
